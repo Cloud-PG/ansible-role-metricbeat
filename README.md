@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/Cloud-PG/ansible-role-metricbeat.svg?branch=master)](https://travis-ci.org/Cloud-PG/ansible-role-metricbeat)
 Metricbeat ansible
 =========
 
