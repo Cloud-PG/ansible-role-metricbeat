@@ -1,4 +1,4 @@
-Role Name
+Metricbeat ansible
 =========
 
 Ansible role for deploying metricbeat on Mesos/Marathon, K8s or bare metal.
@@ -21,9 +21,20 @@ Example Playbook
 ----------------
 
 ```yaml
-    - hosts: servers
-      roles:
-         - indigo-dc.metricbeat
+---
+- hosts: localhost
+  remote_user: root
+  roles:
+    - cloud-pg.ansible_role_metricbeat
+  vars:
+    metric_version: 6.2.4
+    elastic_host: https://example.com:9204
+    username: CHANGEME
+    password: CHANGEME
+    ssl_enabled: true
+    ssl_verification: none
+    index_name: metricbeat-k8s-6.2.4
+    frequency: 30s
 ```
 
 Author Information
