@@ -1,0 +1,22 @@
+---
+
+- name: Get metricbeat
+  get_url:
+    url: https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-{{ metric_version }}-amd64.deb
+    dest: /tmp/metricbeat.deb
+
+- name: Install metricbeat
+  command: dpkg -i /tmp/metricbeat.deb
+
+- name: Compile config template for metricbeat
+  template:
+    src: templates/config.yml
+    dest: /etc/metricbeat/metricbeat.yml
+
+- name: Start metricbeat
+  service:
+    name: metricbeat
+    state: started
+  tags: metric_start
+
+  

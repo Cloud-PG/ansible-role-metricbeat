@@ -1,0 +1,104 @@
+image:
+  repository: docker.elastic.co/beats/metricbeat
+  tag: {{ metric_version }}
+  pullPolicy: IfNotPresent
+
+
+
+# The instances created by daemonset retrieve most metrics from the host
+daemonset:
+  podAnnotations: []
+  tolerations:
+  - key: node-role.kubernetes.io/master
+    operator: Exists
+    effect: NoSchedule
+  nodeSelector: {}
+  resources: {}
+  config:
+    name: santocch
+    metricbeat.config:
+      modules:
+        path: ${path.config}/modules.d/*.yml
+        reload.enabled: false
+    processors:
+    - add_cloud_metadata:
+    output.file:
+      enabled: false
+    output:
+      elasticsearch:
+        hosts:
+        - "{{ elastic_host }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        ssl.enabled: {{ ssl_enabled }}
+        ssl.verification_mode: {{ ssl_verification }}
+        index: "{{ index_name }}-%{+yyyy.MM.dd}"
+    setup.template.pattern: "{{ index_name }}-*"
+    setup.template.name: "{{ index_name }}"
+  modules:
+    system:
+      enabled: true
+      config:
+        - module: system
+          period: {{ frequency }}
+          metricsets:
+            - cpu
+            - load
+            - memory
+            - network
+            - process
+            - process_summary
+            - core
+            - diskio
+            - socket
+          processes: ['.*']
+          process.include_top_n:
+            by_cpu: 5      # include top 5 processes by CPU
+            by_memory: 5   # include top 5 processes by memory
+
+deployment:
+  podAnnotations: []
+  tolerations: []
+  nodeSelector: {}
+  resources: {}
+  config:
+    metricbeat.config:
+      modules:
+        path: ${path.config}/modules.d/*.yml
+        reload.enabled: false
+    processors:
+    - add_cloud_metadata:
+  modules:
+
+# List of beat plugins
+plugins: []
+  # - kinesis.so
+
+# additional environment
+# extraEnv:
+#  - name: test1
+#    value: "test1"
+#  - name: test2
+#    value: "test2"
+
+# Add additional volumes and mounts, for example to read other log files on the host
+extraVolumes: []
+  # - hostPath:
+  #     path: /var/log
+  #   name: varlog
+extraVolumeMounts: []
+  # - name: varlog
+  #   mountPath: /host/var/log
+  #   readOnly: tru  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #  cpu: 100m
+  #  memory: 200Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 100Mi
+
+
+resources: {}

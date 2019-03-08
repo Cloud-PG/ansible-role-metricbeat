@@ -1,0 +1,10 @@
+---
+# vars file for ansible-role-metricbeat
+metric_version:
+elastic_host:
+username:
+password:
+ssl_enabled:
+ssl_verification:
+index_name:
+frequency:

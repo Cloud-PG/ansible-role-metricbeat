@@ -1,0 +1,9 @@
+---
+
+- name: Compile config template for metricbeat
+  template:
+    src: templates/config.yml
+    dest: /tmp/values.yml
+
+- name: Helm install metricbeat
+  command: helm install --name metribeat -f /tmp/values.yml stable/metricbeat

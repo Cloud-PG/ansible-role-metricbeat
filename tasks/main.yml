@@ -1,0 +1,6 @@
+---
+- include: bare.yml
+  when: (orchestrator is undefined) or (orchestrator == "marathon")
+
+- include: kube.yml
+  when: (orchestrator is defined) and (orchestrator == "kubernetes")
