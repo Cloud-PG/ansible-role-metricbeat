@@ -8,6 +8,7 @@ Role Variables
 --------------
 
 ```yaml
+orchestrator:
 metric_version:
 elastic_host:
 username:
@@ -28,6 +29,7 @@ Example Playbook
   roles:
     - cloud-pg.ansible_role_metricbeat
   vars:
+    orchestrator: kubernetes or marathon
     metric_version: 6.2.4
     elastic_host: https://example.com:9204
     username: CHANGEME
