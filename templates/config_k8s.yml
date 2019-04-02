@@ -14,7 +14,7 @@ daemonset:
         enabled: true
         hosts:
         - {{ elastic_host }}
-        index: {{ index_name }}-%{+yyyy.MM.dd}
+        index: {{ index_name }}-%{[beat.version]}-%{+yyyy.MM.dd}
         username: {{ username }}
         password: {{ password }}
         ssl.enabled: {{ ssl_enabled }}
@@ -39,4 +39,4 @@ daemonset:
         by_cpu: 5      # include top 5 processes by CPU
         by_memory: 5   # include top 5 processes by memory
     setup.template.name: {{ index_name }}
-    setup.template.pattern: {{ index_name }}-*
+    setup.template.pattern: {{ index_name }}-%{[beat.version]}-*

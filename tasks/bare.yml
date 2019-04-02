@@ -10,7 +10,7 @@
 
 - name: Compile config template for metricbeat
   template:
-    src: templates/config.yml
+    src: templates/config_bare.yaml
     dest: /etc/metricbeat/metricbeat.yml
 
 - name: Start metricbeat
