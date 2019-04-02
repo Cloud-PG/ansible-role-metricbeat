@@ -22,7 +22,7 @@ daemonset:
     output.file:
         enabled: false
     metricbeat.modules:
-        - module: system
+      - module: system
         period: {{ frequency }}
         metricsets:
         - cpu
