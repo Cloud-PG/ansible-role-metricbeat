@@ -13,6 +13,7 @@ metric_version:
 elastic_host:
 username:
 password:
+beat_name:
 ssl_enabled:
 ssl_verification:
 index_name:
@@ -34,6 +35,7 @@ Example Playbook
     elastic_host: https://example.com:9204
     username: CHANGEME
     password: CHANGEME
+    beat_name: dodas-test
     ssl_enabled: true
     ssl_verification: none
     index_name: metricbeat-k8s-6.2.4

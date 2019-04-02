@@ -1,39 +1,42 @@
-metricbeat.config:
-    modules:
-    path: ${path.config}/modules.d/*.yml
-    reload.enabled: false
-name: santocch
-output.elasticsearch:
-    enabled: true
-    hosts:
-    - {{ elastic_host }}
-    index: {{ index_name }}-%{+yyyy.MM.dd}
-    username: {{ username }}
-    password: {{ password }}
-    ssl.enabled: {{ ssl_enabled }}
-    ssl.verification_mode: {{ ssl_verification }}
-output.file:
-    enabled: false
-    filename: metricbeat
-    number_of_files: 5
-    path: /usr/share/metricbeat/data
-    rotate_every_kb: 10000
-metricbeat.modules:
-    - module: system
-      period: {{ frequency }}
-      metricsets:
-      - cpu
-      - load
-      - memory
-      - network
-      - process
-      - process_summary
-      - core
-      - diskio
-      - socket
-      processes: ['.*']
-      process.include_top_n:
-      by_cpu: 5      # include top 5 processes by CPU
-      by_memory: 5   # include top 5 processes by memory
-setup.template.name: metricbeat-k8s
-setup.template.pattern: metricbeat-k8s-%{[beat.version]}-*
+image:
+  repository: docker.elastic.co/beats/metricbeat
+  tag: {{ metric_version }}
+  pullPolicy: IfNotPresent
+
+daemonset:
+  config:
+    metricbeat.config:
+        modules:
+        path: ${path.config}/modules.d/*.yml
+        reload.enabled: false
+    name: {{ beat_name }}
+    output.elasticsearch:
+        enabled: true
+        hosts:
+        - {{ elastic_host }}
+        index: {{ index_name }}-%{+yyyy.MM.dd}
+        username: {{ username }}
+        password: {{ password }}
+        ssl.enabled: {{ ssl_enabled }}
+        ssl.verification_mode: {{ ssl_verification }}
+    output.file:
+        enabled: false
+    metricbeat.modules:
+        - module: system
+        period: {{ frequency }}
+        metricsets:
+        - cpu
+        - load
+        - memory
+        - network
+        - process
+        - process_summary
+        - core
+        - diskio
+        - socket
+        processes: ['.*']
+        process.include_top_n:
+        by_cpu: 5      # include top 5 processes by CPU
+        by_memory: 5   # include top 5 processes by memory
+    setup.template.name: {{ index_name }}
+    setup.template.pattern: {{ index_name }}-*
