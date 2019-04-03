@@ -46,7 +46,7 @@ daemonset:
           - system
           - volume
         period: 10s
-        hosts: ["localhost:10255"]
+        hosts: ["{{ kubelet_host }}"]
         enabled: true
         add_metadata: true
         in_cluster: true

@@ -4,3 +4,4 @@ metric_version: 6.2.4
 beat_name: dodas
 index_name: metricbeat-dodas
 frequency: 300s
+kubelet_host: localhost:10250
