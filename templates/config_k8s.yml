@@ -38,5 +38,17 @@ daemonset:
         process.include_top_n:
         by_cpu: 5      # include top 5 processes by CPU
         by_memory: 5   # include top 5 processes by memory
+      - module: kubernetes
+        metricsets:
+          - container
+          - node
+          - pod
+          - system
+          - volume
+        period: 10s
+        hosts: ["localhost:10255"]
+        enabled: true
+        add_metadata: true
+        in_cluster: true
     setup.template.name: {{ index_name }}
     setup.template.pattern: {{ index_name }}-%{[beat.version]}-*
